@@ -106,7 +106,7 @@ button {
   <div id="result"></div>
 
   <div class="site-link">
-    <a href="http://www.lifeprediction.net" target="_blank" rel="noopener noreferrer">
+    <a href="http://www.lifeprediction.net">
       LIFEPREDICTION.NET
     </a>
   </div>
@@ -154,8 +154,13 @@ function calculateForecast() {
     if (sign === "fire") message = "Terrible day for fire signs";
   }
 
+  if ([4,8].indexOf(reducedDay) !== -1) {
+    if (sign === "water") message = "Excellent day for water signs";
+    if (sign === "earth") message = "Terrible day for earth signs";
+  }
+
   document.getElementById("result").innerHTML =
-    "DATE NUMBER " + reducedDay + "<br>" + message;
+    "DATE NUMBER " + reducedDay + "<br>" + message + ".";
 }
 </script>
 
