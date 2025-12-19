@@ -1,27 +1,3 @@
-<div style="max-width:400px;padding:20px;border:1px solid #ccc;border-radius:10px;font-family:Arial">
-  <h3>Daily Astrology Forecast</h3>
-
-  <label>Gender</label><br>
-  <select id="gender" style="width:100%;padding:6px;margin-bottom:10px">
-    <option value="male">Male (Sun Sign)</option>
-    <option value="female">Female (Moon Sign)</option>
-  </select>
-
-  <label>Select Your Sign</label><br>
-  <select id="sign" style="width:100%;padding:6px;margin-bottom:10px">
-    <option value="fire">Fire (Aries, Leo, Sagittarius)</option>
-    <option value="earth">Earth (Taurus, Virgo, Capricorn)</option>
-    <option value="air">Air (Gemini, Libra, Aquarius)</option>
-    <option value="water">Water (Cancer, Scorpio, Pisces)</option>
-  </select>
-
-  <button onclick="calculateForecast()" style="width:100%;padding:10px;font-size:16px">
-    Get Today's Forecast
-  </button>
-
-  <div id="result" style="margin-top:15px;font-weight:bold"></div>
-</div>
-
 <script>
 function reduceToSingleDigit(num) {
   while (num > 9) {
@@ -32,8 +8,15 @@ function reduceToSingleDigit(num) {
 
 function calculateForecast() {
   const today = new Date();
-  const day = today.getDate();
-  const reducedDay = reduceToSingleDigit(day);
+
+  const fullNumber =
+    today.getDate().toString() +
+    (today.getMonth() + 1).toString() +
+    today.getFullYear().toString();
+
+  const reducedDay = reduceToSingleDigit(
+    fullNumber.split('').reduce((a, b) => a + Number(b), 0)
+  );
 
   const sign = document.getElementById("sign").value;
   let message = "Neutral day for your sign.";
@@ -54,6 +37,6 @@ function calculateForecast() {
   }
 
   document.getElementById("result").innerHTML =
-    "Today's Reduced Date: <b>" + reducedDay + "</b><br>" + message;
+    "Today's Full Date Reduction: <b>" + reducedDay + "</b><br>" + message;
 }
 </script>
