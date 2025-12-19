@@ -1,3 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Daily Astrology Forecast</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    background-color: #AB4A4F;
+    font-family: 'Open Sans', sans-serif;
+    line-height: 150%;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .tool {
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+    border: 2px solid #ffffff;
+    border-radius: 14px;
+    background-color: #AB4A4F;
+    color: #ffffff;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  select, button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  button {
+    background-color: #ffffff;
+    color: #AB4A4F;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  #result {
+    margin-top: 14px;
+    font-weight: 600;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="tool">
+  <h1>DAILY ASTROLOGY FORECAST</h1>
+
+  <label>GENDER</label>
+  <select id="gender">
+    <option value="male">Male Sun Sign</option>
+    <option value="female">Female Moon Sign</option>
+  </select>
+
+  <label>SIGN ELEMENT</label>
+  <select id="sign">
+    <option value="fire">Fire Aries Leo Sagittarius</option>
+    <option value="earth">Earth Taurus Virgo Capricorn</option>
+    <option value="air">Air Gemini Libra Aquarius</option>
+    <option value="water">Water Cancer Scorpio Pisces</option>
+  </select>
+
+  <button onclick="calculateForecast()">CHECK TODAY</button>
+
+  <div id="result"></div>
+</div>
+
 <script>
 function reduceToSingleDigit(num) {
   while (num > 9) {
@@ -19,21 +112,30 @@ function calculateForecast() {
   );
 
   const sign = document.getElementById("sign").value;
-  let message = "Neutral day for your sign.";
+  let message = "Neutral day for your sign";
 
   if ([1,5,9].includes(reducedDay)) {
-    if (sign === "fire") message = "🔥 Excellent day for Fire signs.";
-    if (sign === "air") message = "⚠️ Terrible day for Air signs.";
+    if (sign === "fire") message = "Excellent day for fire signs";
+    if (sign === "air") message = "Terrible day for air signs";
   }
 
   if ([2,6].includes(reducedDay)) {
-    if (sign === "earth") message = "🌱 Excellent day for Earth signs.";
-    if (sign === "water") message = "⚠️ Terrible day for Water signs.";
+    if (sign === "earth") message = "Excellent day for earth signs";
+    if (sign === "water") message = "Terrible day for water signs";
   }
 
   if ([3,7].includes(reducedDay)) {
-    if (sign === "air") message = "💨 Excellent day for Air signs.";
-    if (sign === "fire") message = "⚠️ Terrible day for Fire signs.";
+    if (sign === "air") message = "Excellent day for air signs";
+    if (sign === "fire") message = "Terrible day for fire signs";
+  }
+
+  document.getElementById("result").innerHTML =
+    "DATE NUMBER " + reducedDay + "<br>" + message;
+}
+</script>
+
+</body>
+</html>
   }
 
   document.getElementById("result").innerHTML =
