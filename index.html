@@ -2,68 +2,83 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Astrology Forecast</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    background-color: #AB4A4F;
-    font-family: 'Open Sans', sans-serif;
-    line-height: 150%;
-  }
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #AB4A4F;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 150%;
+}
 
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 
-  .tool {
-    width: 100%;
-    max-width: 420px;
-    padding: 24px;
-    border: 2px solid #ffffff;
-    border-radius: 14px;
-    background-color: #AB4A4F;
-    color: #ffffff;
-  }
+.tool {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+  border: 2px solid #ffffff;
+  border-radius: 14px;
+  background-color: #AB4A4F;
+  color: #ffffff;
+  box-sizing: border-box;
+}
 
-  h1 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-  }
+h1 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
 
-  label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 600;
-  }
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
 
-  select, button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 16px;
-    font-size: 15px;
-    font-family: 'Open Sans', sans-serif;
-  }
+select, button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
+}
 
-  button {
-    background-color: #ffffff;
-    color: #AB4A4F;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-  }
+button {
+  background-color: #ffffff;
+  color: #AB4A4F;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
 
-  #result {
-    margin-top: 14px;
-    font-weight: 600;
-  }
+#result {
+  margin-top: 14px;
+  font-weight: 600;
+}
+
+.site-link {
+  margin-top: 24px;
+  font-weight: 600;
+}
+
+.site-link a {
+  color: #ffffff;
+  text-decoration: none;
+}
 </style>
 </head>
 
@@ -89,42 +104,52 @@
   <button onclick="calculateForecast()">CHECK TODAY</button>
 
   <div id="result"></div>
+
+  <div class="site-link">
+    <a href="http://www.lifeprediction.net" target="_blank" rel="noopener noreferrer">
+      LIFEPREDICTION.NET
+    </a>
+  </div>
 </div>
 
 <script>
 function reduceToSingleDigit(num) {
   while (num > 9) {
-    num = num.toString().split('').reduce((a, b) => a + Number(b), 0);
+    num = num.toString().split('').reduce(function(a, b) {
+      return a + Number(b);
+    }, 0);
   }
   return num;
 }
 
 function calculateForecast() {
-  const today = new Date();
+  var today = new Date();
 
-  const fullNumber =
+  var fullNumber =
     today.getDate().toString() +
     (today.getMonth() + 1).toString() +
     today.getFullYear().toString();
 
-  const reducedDay = reduceToSingleDigit(
-    fullNumber.split('').reduce((a, b) => a + Number(b), 0)
+  var reducedDay = reduceToSingleDigit(
+    fullNumber.split('').reduce(function(a, b) {
+      return a + Number(b);
+    }, 0)
   );
 
-  const sign = document.getElementById("sign").value;
-  let message = "Neutral day for your sign";
+  var sign = document.getElementById("sign").value;
+  var message = "Neutral day for your sign";
 
-  if ([1,5,9].includes(reducedDay)) {
+  if ([1,5,9].indexOf(reducedDay) !== -1) {
     if (sign === "fire") message = "Excellent day for fire signs";
     if (sign === "air") message = "Terrible day for air signs";
   }
 
-  if ([2,6].includes(reducedDay)) {
+  if ([2,6].indexOf(reducedDay) !== -1) {
     if (sign === "earth") message = "Excellent day for earth signs";
     if (sign === "water") message = "Terrible day for water signs";
   }
 
-  if ([3,7].includes(reducedDay)) {
+  if ([3,7].indexOf(reducedDay) !== -1) {
     if (sign === "air") message = "Excellent day for air signs";
     if (sign === "fire") message = "Terrible day for fire signs";
   }
@@ -136,9 +161,3 @@ function calculateForecast() {
 
 </body>
 </html>
-  }
-
-  document.getElementById("result").innerHTML =
-    "Today's Full Date Reduction: <b>" + reducedDay + "</b><br>" + message;
-}
-</script>
