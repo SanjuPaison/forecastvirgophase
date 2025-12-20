@@ -19,32 +19,35 @@ html, body {
   letter-spacing: 1.5px;
 }
 
+/* IMPORTANT FIX: allow scroll, stop recenter jump */
 body {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  text-align: center;
   flex-direction: column;
-  position: relative;
   padding: 20px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 /* Header */
 .header {
-  position: absolute;
-  top: 20px;
-  left: 20px;
+  width: 100%;
+  max-width: 420px;
   display: flex;
-  align-items: center;
+  align-items: center;          /* vertical center fix */
+  margin-bottom: 24px;
 }
 
 .header img {
   height: 40px;
-  margin-right: 10px;
+  display: block;
 }
 
 .header a {
+  display: flex;
+  align-items: center;          /* text level with logo */
+  gap: 10px;
   color: #ffffff;
   font-weight: 600;
   text-decoration: none;
@@ -100,8 +103,8 @@ button {
 .forecast-heading {
   font-size: 14px;
   font-weight: 600;
-  margin-bottom: 8px;
   text-align: center;
+  margin-bottom: 8px;
 }
 
 .forecast-text {
@@ -112,6 +115,7 @@ button {
 .site-link {
   margin-top: 24px;
   font-weight: 600;
+  text-align: center;
 }
 
 .site-link a {
@@ -121,11 +125,6 @@ button {
 
 /* Mobile */
 @media (max-width: 480px) {
-  .header {
-    position: relative;
-    margin-bottom: 16px;
-    justify-content: center;
-  }
   .header img {
     height: 30px;
   }
@@ -210,11 +209,9 @@ function calculateForecast() {
     GOOD: `Today supports steady career and financial progress. It’s a strong time to increase income, finalize agreements, or move forward with projects that have clear value. Strategic thinking and measured decisions will produce better results than rushing or improvising.<br><br>
     Discipline and focus are especially effective now. Organizing work, handling responsibilities, and following through on plans can turn effort into visible gains and strengthen your professional standing.<br><br>
     Opportunities for advancement are present if you act with preparation and confidence. Meetings, contracts, or public-facing decisions are favored when approached thoughtfully. Think of the day as a well-run machine: consistent input produces reliable output, leading to recognition and tangible rewards.`,
-    
     NORMAL: `Today carries strong energy for action and creativity, but how it unfolds can vary sharply. One expression favors listening, collaboration, and the exchange of ideas. Conversations, brainstorming, and shared planning can produce meaningful breakthroughs when you stay receptive and allow others to contribute rather than pushing your own agenda.<br><br>
     The same intensity can also take a physical or confrontational form if misdirected. Overexertion, haste, or reckless behavior may lead to physical strain or injury, while impatience or forceful communication can attract hostility. These are not simultaneous outcomes, but alternate expressions of the day’s momentum.<br><br>
     Progress comes from choosing restraint and dialogue over impulse and force. When energy is channeled into cooperation, it builds insight and forward movement; when pushed without control, it increases risk. Think of the day as a crossroads where awareness determines the outcome.`,
-    
     BAD: `Today favors caution, privacy, and consolidation rather than outward progress. Personal matters, home concerns, and emotional well-being take priority, while attempts to push forward publicly may face resistance or delay.<br><br>
     Financial pressure, power struggles, or sudden disruptions may arise, making it harder to maintain momentum. Plans can stall, resources may feel strained, and outcomes are less predictable than expected.<br><br>
     The most effective use of the day is quiet maintenance and internal work. Manage obligations, protect resources, and address unresolved issues rather than starting something new. Think of it like sheltering from a storm: staying still and reinforcing what you have is safer than trying to move forward in unstable conditions.`
