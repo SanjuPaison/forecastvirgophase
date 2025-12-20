@@ -16,15 +16,42 @@ html, body {
   background-color: #AB4A4F;
   font-family: 'Open Sans', sans-serif;
   line-height: 150%;
+  letter-spacing: 1.5px;
 }
 
 body {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   text-align: center;
+  flex-direction: column;
+  position: relative;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
+/* Header */
+.header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.header img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.header a {
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Tool */
 .tool {
   width: 100%;
   max-width: 420px;
@@ -39,7 +66,7 @@ body {
 h1 {
   font-size: 20px;
   margin-bottom: 20px;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 label {
@@ -54,7 +81,6 @@ select, button {
   margin-bottom: 16px;
   font-size: 15px;
   font-family: 'Open Sans', sans-serif;
-  box-sizing: border-box;
 }
 
 button {
@@ -65,11 +91,24 @@ button {
   font-weight: 600;
 }
 
+/* Forecast */
 #result {
-  margin-top: 14px;
-  font-weight: 600;
+  margin-top: 16px;
+  text-align: justify;
 }
 
+.forecast-heading {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.forecast-text {
+  font-size: 13px; /* 1 point lower */
+}
+
+/* Links */
 .site-link {
   margin-top: 24px;
   font-weight: 600;
@@ -79,10 +118,29 @@ button {
   color: #ffffff;
   text-decoration: none;
 }
+
+/* Mobile */
+@media (max-width: 480px) {
+  .header {
+    position: relative;
+    margin-bottom: 16px;
+    justify-content: center;
+  }
+  .header img {
+    height: 30px;
+  }
+}
 </style>
 </head>
 
 <body>
+
+<div class="header site-link">
+  <a href="https://lifeprediction.net">
+    <img src="https://assets.nicepagecdn.com/0b5dbf35/6598838/images/Untitled111.png" alt="Logo">
+    LIFE PREDICTION
+  </a>
+</div>
 
 <div class="tool">
   <h1>DAILY ASTROLOGY FORECAST</h1>
@@ -106,61 +164,66 @@ button {
   <div id="result"></div>
 
   <div class="site-link">
-    <a href="https://www.lifeprediction.net">
-      LIFEPREDICTION.NET
-    </a>
+    <a href="https://lifeprediction.net">LIFEPREDICTION.NET</a>
   </div>
 </div>
 
 <script>
 function reduceToSingleDigit(num) {
   while (num > 9) {
-    num = num.toString().split('').reduce(function(a, b) {
-      return a + Number(b);
-    }, 0);
+    num = num.toString().split('').reduce((a, b) => a + Number(b), 0);
   }
   return num;
 }
 
 function calculateForecast() {
   var today = new Date();
-
-  var fullNumber =
-    today.getDate().toString() +
-    (today.getMonth() + 1).toString() +
-    today.getFullYear().toString();
+  var fullNumber = today.getDate().toString() +
+                   (today.getMonth() + 1).toString() +
+                   today.getFullYear().toString();
 
   var reducedDay = reduceToSingleDigit(
-    fullNumber.split('').reduce(function(a, b) {
-      return a + Number(b);
-    }, 0)
+    fullNumber.split('').reduce((a, b) => a + Number(b), 0)
   );
 
   var sign = document.getElementById("sign").value;
-  var message = "Neutral day for your sign";
+  var forecast = "NORMAL";
 
-  if ([1,5,9].indexOf(reducedDay) !== -1) {
-    if (sign === "fire") message = "Excellent day for fire signs";
-    if (sign === "air") message = "Terrible day for air signs";
+  if ([1,5,9].includes(reducedDay)) {
+    if (sign === "fire") forecast = "GOOD";
+    if (sign === "air") forecast = "BAD";
+  }
+  if ([2,6].includes(reducedDay)) {
+    if (sign === "earth") forecast = "GOOD";
+    if (sign === "water") forecast = "BAD";
+  }
+  if ([3,7].includes(reducedDay)) {
+    if (sign === "air") forecast = "GOOD";
+    if (sign === "fire") forecast = "BAD";
+  }
+  if ([4,8].includes(reducedDay)) {
+    if (sign === "water") forecast = "GOOD";
+    if (sign === "earth") forecast = "BAD";
   }
 
-  if ([2,6].indexOf(reducedDay) !== -1) {
-    if (sign === "earth") message = "Excellent day for earth signs";
-    if (sign === "water") message = "Terrible day for water signs";
-  }
-
-  if ([3,7].indexOf(reducedDay) !== -1) {
-    if (sign === "air") message = "Excellent day for air signs";
-    if (sign === "fire") message = "Terrible day for fire signs";
-  }
-
-  if ([4,8].indexOf(reducedDay) !== -1) {
-    if (sign === "water") message = "Excellent day for water signs";
-    if (sign === "earth") message = "Terrible day for earth signs";
-  }
+  var text = {
+    GOOD: `Today supports steady career and financial progress. It’s a strong time to increase income, finalize agreements, or move forward with projects that have clear value. Strategic thinking and measured decisions will produce better results than rushing or improvising.<br><br>
+    Discipline and focus are especially effective now. Organizing work, handling responsibilities, and following through on plans can turn effort into visible gains and strengthen your professional standing.<br><br>
+    Opportunities for advancement are present if you act with preparation and confidence. Meetings, contracts, or public-facing decisions are favored when approached thoughtfully. Think of the day as a well-run machine: consistent input produces reliable output, leading to recognition and tangible rewards.`,
+    
+    NORMAL: `Today carries strong energy for action and creativity, but how it unfolds can vary sharply. One expression favors listening, collaboration, and the exchange of ideas. Conversations, brainstorming, and shared planning can produce meaningful breakthroughs when you stay receptive and allow others to contribute rather than pushing your own agenda.<br><br>
+    The same intensity can also take a physical or confrontational form if misdirected. Overexertion, haste, or reckless behavior may lead to physical strain or injury, while impatience or forceful communication can attract hostility. These are not simultaneous outcomes, but alternate expressions of the day’s momentum.<br><br>
+    Progress comes from choosing restraint and dialogue over impulse and force. When energy is channeled into cooperation, it builds insight and forward movement; when pushed without control, it increases risk. Think of the day as a crossroads where awareness determines the outcome.`,
+    
+    BAD: `Today favors caution, privacy, and consolidation rather than outward progress. Personal matters, home concerns, and emotional well-being take priority, while attempts to push forward publicly may face resistance or delay.<br><br>
+    Financial pressure, power struggles, or sudden disruptions may arise, making it harder to maintain momentum. Plans can stall, resources may feel strained, and outcomes are less predictable than expected.<br><br>
+    The most effective use of the day is quiet maintenance and internal work. Manage obligations, protect resources, and address unresolved issues rather than starting something new. Think of it like sheltering from a storm: staying still and reinforcing what you have is safer than trying to move forward in unstable conditions.`
+  };
 
   document.getElementById("result").innerHTML =
-    "DATE NUMBER " + reducedDay + "<br>" + message + ".";
+    "DATE NUMBER " + reducedDay +
+    "<br><br><div class='forecast-heading'>" + forecast + "</div>" +
+    "<div class='forecast-text'>" + text[forecast] + ".</div>";
 }
 </script>
 
