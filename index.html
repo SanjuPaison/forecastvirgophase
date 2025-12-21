@@ -10,17 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-input,
-select,
-button {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 16px;
-  box-sizing: border-box;
-  border-radius: 6px;
-  border: none;
-}
-
 html, body {
   margin: 0;
   background-color: #AB4A4F;
@@ -35,6 +24,17 @@ body {
   align-items: center;
   padding: 20px;
   box-sizing: border-box;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: none;
 }
 
 /* Header */
@@ -121,7 +121,7 @@ button {
 
 <div class="header">
   <a href="https://lifeprediction.net">
-    <img src="https://assets.nicepagecdn.com/0b5dbf35/6598838/images/Untitled111.png">
+    <img src="https://assets.nicepagecdn.com/0b5dbf35/6598838/images/Untitled111.png" alt="Life Prediction">
     LIFE PREDICTION
   </a>
 </div>
@@ -211,6 +211,13 @@ function calculateForecast() {
   }
 
   const today = new Date();
+
+  const dateString = today.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+
   const fullNumber =
     today.getDate().toString() +
     (today.getMonth() + 1).toString() +
@@ -247,7 +254,7 @@ function calculateForecast() {
   };
 
   result.innerHTML =
-    "DATE NUMBER " + reducedDay +
+    "DATE " + dateString +
     "<br><br><div class='forecast-heading'>" + forecast + "</div>" +
     "<div class='forecast-text'>" + text[forecast] + "</div>";
 
