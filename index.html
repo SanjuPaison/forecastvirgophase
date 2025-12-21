@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-
 input,
 select,
 button {
@@ -21,9 +20,8 @@ button {
   border-radius: 6px;
   border: none;
 }
-  
+
 html, body {
-  height: 100%;
   margin: 0;
   background-color: #AB4A4F;
   font-family: 'Open Sans', sans-serif;
@@ -31,39 +29,32 @@ html, body {
   letter-spacing: 1.5px;
 }
 
-/* IMPORTANT FIX: allow scroll, stop recenter jump */
 body {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
   padding: 20px;
   box-sizing: border-box;
-  overflow-y: auto;
 }
 
 /* Header */
 .header {
   width: 100%;
   max-width: 420px;
-  display: flex;
-  align-items: center;          /* vertical center fix */
   margin-bottom: 24px;
-}
-
-.header img {
-  height: 40px;
-  display: block;
 }
 
 .header a {
   display: flex;
-  align-items: center;          /* text level with logo */
+  align-items: center;
   gap: 10px;
   color: #ffffff;
   font-weight: 600;
   text-decoration: none;
-  font-size: 17px;
+}
+
+.header img {
+  height: 40px;
 }
 
 /* Tool */
@@ -75,13 +66,11 @@ body {
   border-radius: 14px;
   background-color: #AB4A4F;
   color: #ffffff;
-  box-sizing: border-box;
 }
 
 h1 {
   font-size: 20px;
   margin-bottom: 20px;
-  letter-spacing: 1.5px;
   text-align: center;
 }
 
@@ -91,26 +80,17 @@ label {
   font-weight: 600;
 }
 
-select, button {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 16px;
-  font-size: 15px;
-  font-family: 'Open Sans', sans-serif;
-}
-
 button {
   background-color: #ffffff;
   color: #AB4A4F;
-  border: none;
-  cursor: pointer;
   font-weight: 600;
+  cursor: pointer;
 }
 
-/* Forecast */
+/* Result */
 #result {
   margin-top: 16px;
-  text-align: justify;
+  font-size: 13px;
 }
 
 .forecast-heading {
@@ -121,10 +101,9 @@ button {
 }
 
 .forecast-text {
-  font-size: 13px; /* 1 point lower */
+  font-size: 13px;
 }
 
-/* Links */
 .site-link {
   margin-top: 24px;
   font-weight: 600;
@@ -135,52 +114,72 @@ button {
   color: #ffffff;
   text-decoration: none;
 }
-
-/* Mobile */
-@media (max-width: 480px) {
-  .header img {
-    height: 30px;
-  }
-}
 </style>
 </head>
 
 <body>
 
-<div class="header site-link">
+<div class="header">
   <a href="https://lifeprediction.net">
-    <img src="https://assets.nicepagecdn.com/0b5dbf35/6598838/images/Untitled111.png" alt="Logo">
+    <img src="https://assets.nicepagecdn.com/0b5dbf35/6598838/images/Untitled111.png">
     LIFE PREDICTION
   </a>
 </div>
 
 <div class="tool">
-  <h1>DAILY ASTROLOGY FORECAST</h1>
+<h1>DAILY ASTROLOGY FORECAST</h1>
 
-  <label>GENDER</label>
-  <select id="gender">
-    <option value="male">Male Sun Sign</option>
-    <option value="female">Female Moon Sign</option>
-  </select>
+<label>GENDER</label>
+<select id="gender">
+  <option value="male">Male Sun Sign</option>
+  <option value="female">Female Moon Sign</option>
+</select>
 
-  <label>SIGN ELEMENT</label>
-  <select id="sign">
-    <option value="fire">Fire Aries Leo Sagittarius</option>
-    <option value="earth">Earth Taurus Virgo Capricorn</option>
-    <option value="air">Air Gemini Libra Aquarius</option>
-    <option value="water">Water Cancer Scorpio Pisces</option>
-  </select>
+<label>SIGN ELEMENT</label>
+<select id="sign">
+  <option value="fire">Fire Aries Leo Sagittarius</option>
+  <option value="earth">Earth Taurus Virgo Capricorn</option>
+  <option value="air">Air Gemini Libra Aquarius</option>
+  <option value="water">Water Cancer Scorpio Pisces</option>
+</select>
 
-  <button onclick="calculateForecast()">CHECK TODAY</button>
+<!-- CAPTCHA -->
+<label id="captchaLabel"></label>
+<input type="text" id="captchaAnswer" placeholder="Your answer">
 
-  <div id="result"></div>
+<!-- Honeypot -->
+<input type="text" id="website" style="display:none">
 
-  <div class="site-link">
-    <a href="https://lifeprediction.net">LIFEPREDICTION.NET</a>
-  </div>
+<button id="submitBtn" onclick="calculateForecast()">CHECK TODAY</button>
+
+<div id="result"></div>
+
+<div class="site-link">
+  <a href="https://lifeprediction.net">LIFEPREDICTION.NET</a>
+</div>
 </div>
 
 <script>
+let captchaCorrect = "";
+let pageLoadTime = Date.now();
+let hasSubmitted = false;
+
+/* CAPTCHA */
+function generateCaptcha() {
+  const questions = [
+    { q: "How many zodiac signs are there?", a: "12" },
+    { q: "What is 5 + 4?", a: "9" },
+    { q: "What is double of 7?", a: "14" },
+    { q: "What is 10 − 6?", a: "4" }
+  ];
+  const pick = questions[Math.floor(Math.random() * questions.length)];
+  captchaCorrect = pick.a;
+  document.getElementById("captchaLabel").innerText =
+    "ANTI-SPAM: " + pick.q;
+}
+generateCaptcha();
+
+/* NUMEROLOGY */
 function reduceToSingleDigit(num) {
   while (num > 9) {
     num = num.toString().split('').reduce((a, b) => a + Number(b), 0);
@@ -188,18 +187,41 @@ function reduceToSingleDigit(num) {
   return num;
 }
 
+/* MAIN */
 function calculateForecast() {
-  var today = new Date();
-  var fullNumber = today.getDate().toString() +
-                   (today.getMonth() + 1).toString() +
-                   today.getFullYear().toString();
+  const result = document.getElementById("result");
+  const btn = document.getElementById("submitBtn");
 
-  var reducedDay = reduceToSingleDigit(
+  if (hasSubmitted) {
+    result.innerHTML = "You have already checked today’s forecast.";
+    return;
+  }
+
+  if (document.getElementById("website").value !== "") return;
+
+  if (Date.now() - pageLoadTime < 3000) {
+    result.innerHTML = "Please take a moment before submitting.";
+    return;
+  }
+
+  if (document.getElementById("captchaAnswer").value.trim() !== captchaCorrect) {
+    result.innerHTML = "Incorrect anti-spam answer. Try again.";
+    generateCaptcha();
+    return;
+  }
+
+  const today = new Date();
+  const fullNumber =
+    today.getDate().toString() +
+    (today.getMonth() + 1).toString() +
+    today.getFullYear().toString();
+
+  const reducedDay = reduceToSingleDigit(
     fullNumber.split('').reduce((a, b) => a + Number(b), 0)
   );
 
-  var sign = document.getElementById("sign").value;
-  var forecast = "NORMAL";
+  const sign = document.getElementById("sign").value;
+  let forecast = "NORMAL";
 
   if ([1,5,9].includes(reducedDay)) {
     if (sign === "fire") forecast = "GOOD";
@@ -218,22 +240,21 @@ function calculateForecast() {
     if (sign === "earth") forecast = "BAD";
   }
 
-  var text = {
-    GOOD: `Today supports steady career and financial progress. It’s a strong time to increase income, finalize agreements, or move forward with projects that have clear value. Strategic thinking and measured decisions will produce better results than rushing or improvising.<br><br>
-    Discipline and focus are especially effective now. Organizing work, handling responsibilities, and following through on plans can turn effort into visible gains and strengthen your professional standing.<br><br>
-    Opportunities for advancement are present if you act with preparation and confidence. Meetings, contracts, or public-facing decisions are favored when approached thoughtfully. Think of the day as a well-run machine: consistent input produces reliable output, leading to recognition and tangible rewards.`,
-    NORMAL: `Today carries strong energy for action and creativity, but how it unfolds can vary sharply. One expression favors listening, collaboration, and the exchange of ideas. Conversations, brainstorming, and shared planning can produce meaningful breakthroughs when you stay receptive and allow others to contribute rather than pushing your own agenda.<br><br>
-    The same intensity can also take a physical or confrontational form if misdirected. Overexertion, haste, or reckless behavior may lead to physical strain or injury, while impatience or forceful communication can attract hostility. These are not simultaneous outcomes, but alternate expressions of the day’s momentum.<br><br>
-    Progress comes from choosing restraint and dialogue over impulse and force. When energy is channeled into cooperation, it builds insight and forward movement; when pushed without control, it increases risk. Think of the day as a crossroads where awareness determines the outcome.`,
-    BAD: `Today favors caution, privacy, and consolidation rather than outward progress. Personal matters, home concerns, and emotional well-being take priority, while attempts to push forward publicly may face resistance or delay.<br><br>
-    Financial pressure, power struggles, or sudden disruptions may arise, making it harder to maintain momentum. Plans can stall, resources may feel strained, and outcomes are less predictable than expected.<br><br>
-    The most effective use of the day is quiet maintenance and internal work. Manage obligations, protect resources, and address unresolved issues rather than starting something new. Think of it like sheltering from a storm: staying still and reinforcing what you have is safer than trying to move forward in unstable conditions.`
+  const text = {
+    GOOD: "Today supports steady progress, discipline, and measurable gains.",
+    NORMAL: "Energy can express through collaboration or physical action depending on restraint.",
+    BAD: "The day favors caution, privacy, and conserving resources."
   };
 
-  document.getElementById("result").innerHTML =
+  result.innerHTML =
     "DATE NUMBER " + reducedDay +
     "<br><br><div class='forecast-heading'>" + forecast + "</div>" +
-    "<div class='forecast-text'>" + text[forecast] + ".</div>";
+    "<div class='forecast-text'>" + text[forecast] + "</div>";
+
+  hasSubmitted = true;
+  btn.disabled = true;
+  btn.style.opacity = "0.6";
+  btn.style.cursor = "not-allowed";
 }
 </script>
 
