@@ -227,7 +227,7 @@ function calculateForecast() {
   );
 
   const sign = document.getElementById("sign").value;
-  let forecast = "NORMAL";
+  let forecast = "DANGER";
 
   if ([1,5,9].includes(reducedDay)) {
     if (sign === "fire") forecast = "GOOD";
@@ -247,9 +247,9 @@ function calculateForecast() {
   }
 
   const text = {
-    GOOD: "Today supports steady progress, discipline, and measurable gains.",
-    NORMAL: "Energy can express through collaboration or physical action depending on restraint.",
-    BAD: "The day favors caution, privacy, and conserving resources."
+    GOOD: `Today supports steady career and financial progress. It’s the time to increase income, finalize agreements, or move forward with projects that have clear value.`,
+    DANGER: `Today carries strong energy for action, creativity, communication, and ideas, which can express through collaboration or confrontation depending on caution and restraint.`,
+    BAD: `This day favors caution, privacy, and consolidation rather than outward progress. Be wary of bad luck, deception and manage emotional turmoil.`
   };
 
   result.innerHTML =
